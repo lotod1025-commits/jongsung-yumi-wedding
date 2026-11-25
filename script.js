@@ -292,7 +292,7 @@
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) { finishIntro(); return; }
     intro.classList.add('untying');
     $('#untieRibbon').disabled = true;
-    introTimer = setTimeout(finishIntro, 1750);
+    introTimer = setTimeout(finishIntro, 2350);
   };
   $('#untieRibbon')?.addEventListener('click', untieRibbon);
   $('#skipIntro')?.addEventListener('click', finishIntro);
