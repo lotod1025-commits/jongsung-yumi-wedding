@@ -63,7 +63,7 @@ window.WEDDING_CONFIG={
     "full": "assets/gallery/11-view.jpg"
   }
 ],
- naverMapClientId:"",
- supabaseUrl:"",
- supabaseAnonKey:""
+ naverMapClientId:"r8z7e8vj4x",
+ supabaseUrl:"https://kyfdlkyzngqplamvfmpr.supabase.co",
+ supabaseAnonKey:"sb_publishable_D--a85sLUv_KVW7z1jz31g_OfWnElD5"
 };

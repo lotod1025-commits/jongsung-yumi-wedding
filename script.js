@@ -273,6 +273,43 @@
     finally { submit.disabled = false; }
   });
 
+  const bgm = $('#weddingBgm');
+  const bgmToggle = $('#bgmToggle');
+  const bgmState = $('#bgmState');
+  let bgmMuted = false;
+  try { bgmMuted = localStorage.getItem('wedding-bgm-muted-v1') === '1'; } catch {}
+  const updateBgmButton = () => {
+    if (!bgm || !bgmToggle) return;
+    const playing = !bgm.paused && !bgmMuted;
+    const label = playing ? '배경 음악 끄기' : '배경 음악 켜기';
+    bgmToggle.classList.toggle('is-playing', playing);
+    bgmToggle.setAttribute('aria-pressed', String(playing));
+    bgmToggle.setAttribute('aria-label', label);
+    if (bgmState) bgmState.textContent = label;
+  };
+  const startBgm = () => {
+    if (!bgm || bgmMuted) { updateBgmButton(); return; }
+    bgm.volume = 0.32;
+    const playback = bgm.play();
+    if (playback?.then) playback.then(updateBgmButton).catch(updateBgmButton);
+    else updateBgmButton();
+  };
+  bgmToggle?.addEventListener('click', () => {
+    if (bgm.paused || bgmMuted) {
+      bgmMuted = false;
+      try { localStorage.setItem('wedding-bgm-muted-v1', '0'); } catch {}
+      startBgm();
+    } else {
+      bgm.pause();
+      bgmMuted = true;
+      try { localStorage.setItem('wedding-bgm-muted-v1', '1'); } catch {}
+      updateBgmButton();
+    }
+  });
+  bgm?.addEventListener('play', updateBgmButton);
+  bgm?.addEventListener('pause', updateBgmButton);
+  updateBgmButton();
+
   const intro = $('#ribbonIntro');
   const invitation = $('#top');
   let introFinished = false;
@@ -289,13 +326,14 @@
   };
   const untieRibbon = () => {
     if (introFinished) return;
+    startBgm();
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) { finishIntro(); return; }
     intro.classList.add('untying');
     $('#untieRibbon').disabled = true;
     introTimer = setTimeout(finishIntro, 2350);
   };
   $('#untieRibbon')?.addEventListener('click', untieRibbon);
-  $('#skipIntro')?.addEventListener('click', finishIntro);
+  $('#skipIntro')?.addEventListener('click', () => { startBgm(); finishIntro(); });
   $('.ribbon-scene').style.pointerEvents = 'auto';
   $('.ribbon-scene')?.addEventListener('click', untieRibbon);
   invitation.inert = true;
