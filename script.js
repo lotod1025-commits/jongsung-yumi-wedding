@@ -312,7 +312,9 @@
 
   const intro = $('#ribbonIntro');
   const invitation = $('#top');
+  const ribbonAnimation = $('#ribbonAnimation');
   let introFinished = false;
+  let introEnding = false;
   let introTimer;
   const finishIntro = () => {
     if (introFinished) return;
@@ -321,16 +323,24 @@
     intro.hidden = true;
     invitation.inert = false;
     document.body.classList.remove('intro-active');
-    try { sessionStorage.setItem('wedding-ribbon-intro-v6', '1'); } catch {}
+    try { sessionStorage.setItem('wedding-ribbon-intro-v7', '1'); } catch {}
     setTimeout(() => openDialog(rsvpDialog), 500);
   };
+  const finishRibbonAnimation = () => {
+    if (introFinished || introEnding) return;
+    introEnding = true;
+    clearTimeout(introTimer);
+    intro.classList.add('ending');
+    introTimer = setTimeout(finishIntro, 420);
+  };
   const untieRibbon = () => {
-    if (introFinished) return;
+    if (introFinished || intro.classList.contains('untying')) return;
     startBgm();
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) { finishIntro(); return; }
     intro.classList.add('untying');
     $('#untieRibbon').disabled = true;
-    introTimer = setTimeout(finishIntro, 2550);
+    ribbonAnimation.src = 'assets/ribbon-untie-transparent.webp';
+    introTimer = setTimeout(finishRibbonAnimation, 3150);
   };
   $('#untieRibbon')?.addEventListener('click', untieRibbon);
   $('#skipIntro')?.addEventListener('click', () => { startBgm(); finishIntro(); });
@@ -338,5 +348,5 @@
   $('.ribbon-scene')?.addEventListener('click', untieRibbon);
   invitation.inert = true;
   document.body.classList.add('intro-active');
-  try { if (sessionStorage.getItem('wedding-ribbon-intro-v6') === '1') finishIntro(); } catch {}
+  try { if (sessionStorage.getItem('wedding-ribbon-intro-v7') === '1') finishIntro(); } catch {}
 })();
