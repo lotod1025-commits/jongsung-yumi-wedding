@@ -321,7 +321,7 @@
     intro.hidden = true;
     invitation.inert = false;
     document.body.classList.remove('intro-active');
-    try { sessionStorage.setItem('wedding-ribbon-intro-v4', '1'); } catch {}
+    try { sessionStorage.setItem('wedding-ribbon-intro-v5', '1'); } catch {}
     setTimeout(() => openDialog(rsvpDialog), 500);
   };
   const untieRibbon = () => {
@@ -330,7 +330,7 @@
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) { finishIntro(); return; }
     intro.classList.add('untying');
     $('#untieRibbon').disabled = true;
-    introTimer = setTimeout(finishIntro, 2150);
+    introTimer = setTimeout(finishIntro, 2550);
   };
   $('#untieRibbon')?.addEventListener('click', untieRibbon);
   $('#skipIntro')?.addEventListener('click', () => { startBgm(); finishIntro(); });
@@ -338,5 +338,5 @@
   $('.ribbon-scene')?.addEventListener('click', untieRibbon);
   invitation.inert = true;
   document.body.classList.add('intro-active');
-  try { if (sessionStorage.getItem('wedding-ribbon-intro-v4') === '1') finishIntro(); } catch {}
+  try { if (sessionStorage.getItem('wedding-ribbon-intro-v5') === '1') finishIntro(); } catch {}
 })();
