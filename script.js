@@ -321,7 +321,7 @@
     intro.hidden = true;
     invitation.inert = false;
     document.body.classList.remove('intro-active');
-    try { sessionStorage.setItem('wedding-ribbon-intro-v5', '1'); } catch {}
+    try { sessionStorage.setItem('wedding-ribbon-intro-v6', '1'); } catch {}
     setTimeout(() => openDialog(rsvpDialog), 500);
   };
   const untieRibbon = () => {
@@ -338,5 +338,5 @@
   $('.ribbon-scene')?.addEventListener('click', untieRibbon);
   invitation.inert = true;
   document.body.classList.add('intro-active');
-  try { if (sessionStorage.getItem('wedding-ribbon-intro-v5') === '1') finishIntro(); } catch {}
+  try { if (sessionStorage.getItem('wedding-ribbon-intro-v6') === '1') finishIntro(); } catch {}
 })();
